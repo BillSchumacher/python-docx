@@ -50,8 +50,7 @@ class CT_CoreProperties(BaseOxmlElement):
         Return a new ``<cp:coreProperties>`` element
         """
         xml = cls._coreProperties_tmpl
-        coreProperties = parse_xml(xml)
-        return coreProperties
+        return parse_xml(xml)
 
     @property
     def author_text(self):
@@ -159,8 +158,7 @@ class CT_CoreProperties(BaseOxmlElement):
             # non-integer revision strings also resolve to 0
             revision = 0
         # as do negative integers
-        if revision < 0:
-            revision = 0
+        revision = max(revision, 0)
         return revision
 
     @revision_number.setter
@@ -215,8 +213,7 @@ class CT_CoreProperties(BaseOxmlElement):
         """
         get_or_add_method_name = 'get_or_add_%s' % prop_name
         get_or_add_method = getattr(self, get_or_add_method_name)
-        element = get_or_add_method()
-        return element
+        return get_or_add_method()
 
     @classmethod
     def _offset_dt(cls, dt, offset_str):

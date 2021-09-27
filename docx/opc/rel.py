@@ -111,7 +111,7 @@ class Relationships(dict):
         |ValueError| if more than one matching relationship is found.
         """
         matching = [rel for rel in self.values() if rel.reltype == reltype]
-        if len(matching) == 0:
+        if not matching:
             tmpl = "no relationship of type '%s' in collection"
             raise KeyError(tmpl % reltype)
         if len(matching) > 1:

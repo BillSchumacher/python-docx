@@ -146,8 +146,7 @@ class CT_Tbl(BaseOxmlElement):
         each cell in the second row, etc.
         """
         for tr in self.tr_lst:
-            for tc in tr.tc_lst:
-                yield tc
+            yield from tr.tc_lst
 
     @classmethod
     def new_tbl(cls, rows, cols, width):
@@ -203,35 +202,29 @@ class CT_Tbl(BaseOxmlElement):
     @classmethod
     def _tblGrid_xml(cls, col_count, col_width):
         xml = '  <w:tblGrid>\n'
-        for i in range(col_count):
+        for _ in range(col_count):
             xml += '    <w:gridCol w:w="%d"/>\n' % col_width.twips
         xml += '  </w:tblGrid>\n'
         return xml
 
     @classmethod
     def _trs_xml(cls, row_count, col_count, col_width):
-        xml = ''
-        for i in range(row_count):
-            xml += (
+        return ''.join((
                 '  <w:tr>\n'
                 '%s'
                 '  </w:tr>\n'
-            ) % cls._tcs_xml(col_count, col_width)
-        return xml
+            ) % cls._tcs_xml(col_count, col_width) for _ in range(row_count))
 
     @classmethod
     def _tcs_xml(cls, col_count, col_width):
-        xml = ''
-        for i in range(col_count):
-            xml += (
+        return ''.join((
                 '    <w:tc>\n'
                 '      <w:tcPr>\n'
                 '        <w:tcW w:type="dxa" w:w="%d"/>\n'
                 '      </w:tcPr>\n'
                 '      <w:p/>\n'
                 '    </w:tc>\n'
-            ) % col_width.twips
-        return xml
+            ) % col_width.twips for _ in range(col_count))
 
 
 class CT_TblGrid(BaseOxmlElement):
@@ -313,7 +306,7 @@ class CT_TblPr(BaseOxmlElement):
         tblLayout = self.tblLayout
         if tblLayout is None:
             return True
-        return False if tblLayout.type == 'fixed' else True
+        return tblLayout.type != 'fixed'
 
     @autofit.setter
     def autofit(self, value):
@@ -562,9 +555,7 @@ class CT_Tc(BaseOxmlElement):
         if len(block_items) > 1:
             return False
         p = block_items[0]  # cell must include at least one <w:p> element
-        if len(p.r_lst) == 0:
-            return True
-        return False
+        return len(p.r_lst) == 0
 
     def _move_content_to(self, other_tc):
         """

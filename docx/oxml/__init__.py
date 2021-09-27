@@ -25,8 +25,7 @@ def parse_xml(xml):
     parser is used, so custom element classes are produced for elements in
     *xml* that have them.
     """
-    root_element = etree.fromstring(xml, oxml_parser)
-    return root_element
+    return etree.fromstring(xml, oxml_parser)
 
 
 def register_element_cls(tag, cls):

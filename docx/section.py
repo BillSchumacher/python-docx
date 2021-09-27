@@ -287,7 +287,7 @@ class _BaseHeaderFooter(BlockItemContainer):
         # ---do nothing when value is not being changed---
         if new_state == self.is_linked_to_previous:
             return
-        if new_state is True:
+        if new_state:
             self._drop_definition()
         else:
             self._add_definition()
@@ -386,7 +386,7 @@ class _Footer(_BaseHeaderFooter):
     def _has_definition(self):
         """True if a footer is defined for this section."""
         footerReference = self._sectPr.get_footerReference(self._hdrftr_index)
-        return False if footerReference is None else True
+        return footerReference is not None
 
     @property
     def _prior_headerfooter(self):
@@ -430,7 +430,7 @@ class _Header(_BaseHeaderFooter):
     def _has_definition(self):
         """True if a header is explicitly defined for this section."""
         headerReference = self._sectPr.get_headerReference(self._hdrftr_index)
-        return False if headerReference is None else True
+        return headerReference is not None
 
     @property
     def _prior_headerfooter(self):

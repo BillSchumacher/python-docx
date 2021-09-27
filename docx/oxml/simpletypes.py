@@ -23,8 +23,7 @@ class BaseSimpleType(object):
     @classmethod
     def to_xml(cls, value):
         cls.validate(value)
-        str_value = cls.convert_to_xml(value)
-        return str_value
+        return cls.convert_to_xml(value)
 
     @classmethod
     def validate_int(cls, value):
@@ -394,8 +393,7 @@ class ST_UniversalMeasure(BaseSimpleType):
             'mm': 36000, 'cm': 360000, 'in': 914400, 'pt': 12700,
             'pc': 152400, 'pi': 152400
         }[units_part]
-        emu_value = Emu(int(round(quantity * multiplier)))
-        return emu_value
+        return Emu(int(round(quantity * multiplier)))
 
 
 class ST_VerticalAlignRun(XsdStringEnumeration):

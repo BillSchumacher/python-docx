@@ -204,6 +204,8 @@ class _MarkerFinder(object):
         for those markers that have a segment.
         """
         position = start
+        marker_code = None
+        segment_offset = None
         while True:
             # skip over any non-\xFF bytes
             position = self._offset_of_next_ff_byte(start=position)
@@ -241,8 +243,7 @@ class _MarkerFinder(object):
         byte_ = self._read_byte()
         while byte_ != b'\xFF':
             byte_ = self._read_byte()
-        offset_of_ff_byte = self._stream.tell() - 1
-        return offset_of_ff_byte
+        return self._stream.tell() - 1
 
     def _read_byte(self):
         """
@@ -351,12 +352,11 @@ class _App0Marker(_Marker):
         Return dots per inch corresponding to *density* value.
         """
         if self._density_units == 1:
-            dpi = density
+            return density
         elif self._density_units == 2:
-            dpi = int(round(density * 2.54))
+            return int(round(density * 2.54))
         else:
-            dpi = 72
-        return dpi
+            return 72
 
     @classmethod
     def from_stream(cls, stream, marker_code, offset):

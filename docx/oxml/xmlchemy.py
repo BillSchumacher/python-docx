@@ -46,10 +46,10 @@ class XmlString(Unicode):
         lines_other = other.splitlines()
         if len(lines) != len(lines_other):
             return False
-        for line, line_other in zip(lines, lines_other):
-            if not self._eq_elm_strs(line, line_other):
-                return False
-        return True
+        return all(
+            self._eq_elm_strs(line, line_other)
+            for line, line_other in zip(lines, lines_other)
+        )
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -470,10 +470,7 @@ class Choice(_BaseChildElement):
         """
         Calculate property name from tag name, e.g. a:schemeClr -> schemeClr.
         """
-        if ':' in self._nsptagname:
-            start = self._nsptagname.index(':') + 1
-        else:
-            start = 0
+        start = self._nsptagname.index(':') + 1 if ':' in self._nsptagname else 0
         return self._nsptagname[start:]
 
     @lazyproperty

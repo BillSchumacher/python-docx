@@ -127,9 +127,8 @@ class Part(object):
         """
         if is_external:
             return self.rels.get_or_add_ext_rel(reltype, target)
-        else:
-            rel = self.rels.get_or_add(reltype, target)
-            return rel.rId
+        rel = self.rels.get_or_add(reltype, target)
+        return rel.rId
 
     @property
     def related_parts(self):

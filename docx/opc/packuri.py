@@ -17,7 +17,7 @@ class PackURI(str):
     _filename_re = re.compile('([a-zA-Z]+)([1-9][0-9]*)?')
 
     def __new__(cls, pack_uri_str):
-        if not pack_uri_str[0] == '/':
+        if pack_uri_str[0] != '/':
             tmpl = "PackURI must begin with slash, got '%s'"
             raise ValueError(tmpl % pack_uri_str)
         return str.__new__(cls, pack_uri_str)

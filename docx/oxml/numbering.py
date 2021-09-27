@@ -125,6 +125,7 @@ class CT_Numbering(BaseOxmlElement):
         """
         numId_strs = self.xpath('./w:num/@w:numId')
         num_ids = [int(numId_str) for numId_str in numId_strs]
+        num = 1
         for num in range(1, len(num_ids)+2):
             if num not in num_ids:
                 break

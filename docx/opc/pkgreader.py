@@ -103,12 +103,11 @@ class PackageReader(object):
             reltype = srel.reltype
             part_srels = PackageReader._srels_for(phys_reader, partname)
             blob = phys_reader.blob_for(partname)
-            yield (partname, blob, reltype, part_srels)
+            yield partname, blob, reltype, part_srels
             next_walker = PackageReader._walk_phys_parts(
                 phys_reader, part_srels, visited_partnames
             )
-            for partname, blob, reltype, srels in next_walker:
-                yield (partname, blob, reltype, srels)
+            yield from next_walker
 
 
 class _ContentTypeMap(object):

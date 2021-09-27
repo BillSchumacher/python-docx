@@ -348,4 +348,4 @@ class CT_Styles(BaseOxmlElement):
         """
         Generate each of the `w:style` child elements in document order.
         """
-        return (style for style in self.xpath('w:style'))
+        return iter(self.xpath('w:style'))

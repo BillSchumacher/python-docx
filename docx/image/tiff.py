@@ -173,7 +173,7 @@ class _IfdEntries(object):
         *offset*.
         """
         ifd_parser = _IfdParser(stream, offset)
-        entries = dict((e.tag, e.value) for e in ifd_parser.iter_entries())
+        entries = {e.tag: e.value for e in ifd_parser.iter_entries()}
         return cls(entries)
 
     def get(self, tag_code, default=None):
@@ -224,10 +224,7 @@ def _IfdEntryFactory(stream_rdr, offset):
         TIFF_FLD.RATIONAL: _RationalIfdEntry,
     }
     field_type = stream_rdr.read_short(offset, 2)
-    if field_type in ifd_entry_classes:
-        entry_cls = ifd_entry_classes[field_type]
-    else:
-        entry_cls = _IfdEntry
+    entry_cls = ifd_entry_classes.get(field_type, _IfdEntry)
     return entry_cls.from_stream(stream_rdr, offset)
 
 

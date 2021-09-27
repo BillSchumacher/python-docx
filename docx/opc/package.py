@@ -68,7 +68,9 @@ class OpcPackage(object):
         Generate exactly one reference to each of the parts in the package by
         performing a depth-first traversal of the rels graph.
         """
-        def walk_parts(source, visited=list()):
+        def walk_parts(source, visited=None):
+            if visited is None:
+                visited = list()
             for rel in source.rels.values():
                 if rel.is_external:
                     continue
@@ -207,15 +209,12 @@ class Unmarshaller(object):
     def _unmarshal_parts(pkg_reader, package, part_factory):
         """
         Return a dictionary of |Part| instances unmarshalled from
-        *pkg_reader*, keyed by partname. Side-effect is that each part in
+        *pkg_reader*, keyed by part_name. Side-effect is that each part in
         *pkg_reader* is constructed using *part_factory*.
         """
-        parts = {}
-        for partname, content_type, reltype, blob in pkg_reader.iter_sparts():
-            parts[partname] = part_factory(
-                partname, content_type, reltype, blob, package
-            )
-        return parts
+        return {part_name: part_factory(
+                    part_name, content_type, rel_type, blob, package
+                ) for part_name, content_type, rel_type, blob in pkg_reader.iter_sparts()}
 
     @staticmethod
     def _unmarshal_relationships(pkg_reader, package, parts):

@@ -224,8 +224,7 @@ class CT_Relationships(BaseOxmlElement):
         Return a new ``<Relationships>`` element.
         """
         xml = '<Relationships xmlns="%s"/>' % nsmap['pr']
-        relationships = parse_xml(xml)
-        return relationships
+        return parse_xml(xml)
 
     @property
     def Relationship_lst(self):
@@ -274,8 +273,7 @@ class CT_Types(BaseOxmlElement):
         Return a new ``<Types>`` element.
         """
         xml = '<Types xmlns="%s"/>' % nsmap['ct']
-        types = parse_xml(xml)
-        return types
+        return parse_xml(xml)
 
     @property
     def overrides(self):

@@ -73,7 +73,7 @@ class _ContentTypesItem(object):
     """
     def __init__(self):
         self._defaults = CaseInsensitiveDict()
-        self._overrides = dict()
+        self._overrides = {}
 
     @property
     def blob(self):
